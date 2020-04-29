@@ -1,31 +1,27 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import AppHeader from './Components/AppHeader';
+import SearchBlock from './Components/searchBlock';
+import ToDoList from './Components/toDoList';
 
-const AppHeader = () => {
-  return <h1>To-Do List</h1>;
-}
 
-const SearchBlock = () => {
-  return <input placeholder="Search..."></input>;
-}
 
-const ToDoList = () => {
+
+const App = () => {
   return (
-  <ul>
-  <li>Learn JS</li>
-  <li>Read Book</li>
-  <li>Learn React</li>
-</ul>
-);
-}
-
-const elements = (
-  <div>
+    <>
+    <div>
     <AppHeader />
     <SearchBlock />
     <ToDoList />
   </div>
-)
+  <div>
+    <p>Lorem lkjhgfdserty</p>
+  </div>
+  </>
+  )
+}
 
-ReactDOM.render(elements, document.getElementById('root'));
+
+ReactDOM.render(<App />, document.getElementById('root'));
