@@ -1,0 +1,8 @@
+.todo-list-item{
+    display: flex;
+}
+
+.btn-high{
+    margin-left: auto;
+    margin-right: 0.8rem;
+}
