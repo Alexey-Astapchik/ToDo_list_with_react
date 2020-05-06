@@ -1,6 +1,6 @@
 import React from 'react';
 
-import '../AppHeader.css'
+import './AppHeader.css'
 const AppHeader = () => {
     return <h1>To-Do List</h1>;
 } 
