@@ -1,0 +1,11 @@
+.info_btn-status{
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    padding-right: 30px;
+}
+
+.bt{
+    margin-left: 10px;
+}
