@@ -5,42 +5,63 @@ import './todoListItem.css';
 
 class TodoListItem extends React.Component{
 
-    clickOnLabel = () => {
-        console.log(this.props.label)
-    };
-
     // состояние state - это объект, кот. содержит данные.
 
     state = {
-        done: true
+        done: false,
+        important: false
     }
     
 
+    clickOnLabel = () => {
+        this.setState( (state) => {
+            return {
+                done: !state.done 
+            }
+        })
+    };
+
+    makeImportant = () => {
+        this.setState((state) => {
+            return{
+                important: !state.important
+            }
+        })
+    } 
+
     render () {
-        const { label, important } = this.props;
-        const { done } = this.state;
+        const { label, onDeleteItem } = this.props;
+        const { done, important } = this.state;
         
 
-        let classNames = 'todo-list-label';
+        let classNames = "todo-list-item";
 
         if(done) {
             classNames += ' done';
         }
 
-        const style = {
-            color: important ? 'tomato' : 'black'
+        if(important) {
+            classNames += ' important';
         }
     
         return (
-            <div className="todo-list-item">
-                <span style={ style } 
-                className={classNames}
-                onClick= {this.clickOnLabel}
-                >{ label }</span>
-                <button className="btn btn-outline-success btn-high">
+            <div className={classNames}>
+                <span 
+                    className='todo-list-label' 
+                    onClick= {this.clickOnLabel}
+                >
+                    { label }
+                </span>
+                <button 
+                    className="btn btn-outline-success btn-high"
+                    onClick={this.makeImportant}
+                >
                     <i className="fa fa-bolt" aria-hidden="true"></i>
                 </button>
-                <button className="btn btn-outline-danger">
+                <button 
+                    className="btn btn-outline-danger"
+                    onClick={onDeleteItem}
+                >
                     <i className="fa fa-trash-o" aria-hidden="true"></i>
                 </button>
             </div>
