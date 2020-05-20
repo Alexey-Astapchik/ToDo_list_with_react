@@ -6,37 +6,107 @@ import SearchBlock from '../searchBlock/searchBlock';
 import ToDoList from '../toDoList/toDoList';
 
 import '../App/App.css'
+import ItemAddBtn from '../ItemAddBtn/ItemAddBtn';
 
 class App extends React.Component {
 
   state = {
     todoData: [
-      {label: 'Learn C#', important:true, id:1},
-      {label: 'Learn React', important:false, id:2},
-      {label: 'Learn C++', important:false, id:3},
-      {label: 'Python', important:true, id:4}
-    ] 
+      {label: 'Learn C#', important:false, done:false, id:1},
+      {label: 'Learn React', important:false, done:false, id:2},
+      {label: 'Learn C++', important:false, done:false, id:3},
+      {label: 'Python', important:false, done:false, id:4}
+    ],
+    detectedText: '',
   };
 
   deleteItem = (id) => {
-    this.setState(({ todoData }) => {
-      const index = todoData.findIndex((el) => el.id === id)
-      todoData.splice(index, 1);
+    this.setState((state) => {
+      const index = state.todoData.findIndex((el) => el.id === id)
+ 
+      const newToDoArr = [
+        ...state.todoData.slice(0, index), 
+        ...state.todoData.slice(index + 1)
+      ]
       return {
-        todoData: todoData
+        todoData: newToDoArr
       }
     })
   }
 
+  addItem = (text) => {
+    console.log(text)
+    const newItem = {
+      label: text,
+      important: false, 
+      id: this.state.todoData.length + 1
+    }
+
+    this.setState(({ todoData }) => {
+      const newItemsArr = [...todoData, newItem];
+      return {
+        todoData: newItemsArr
+      }
+    })
+  }
+
+  toggleProp = (id, arr, prop) => {
+    
+      const index = arr.findIndex((el) => el.id === id);
+
+      const oldObj = arr[index];
+      const newObj = {...oldObj, [prop]: !oldObj[prop]};
+
+      return [
+        ...arr.slice(0, index), 
+        newObj,
+        ...arr.slice(index + 1)
+      ];
+  };  
+
+  toggleDone = (id) => {
+    this.setState(({ todoData }) => {
+      return {
+        todoData: this.toggleProp(id, todoData, 'done')
+      }
+    })
+  }
+
+  toggleImportant = (id) => {
+    this.setState(({ todoData }) => {
+      return {
+        todoData: this.toggleProp(id, todoData, 'important')
+      }
+    })
+  }
+
+  searchInTodoList = (arr, detectedText) => {
+    if(detectedText.length === 0){
+      return arr;
+    }
+    return arr.filter((e) => {
+      return  e.label.indexOf(detectedText) > 1;
+    })
+  } 
+
   render() {
+    const { todoData, detectedText } = this.state;
+    const detectedItems = this.searchInTodoList(todoData, detectedText)
+    const done = todoData.filter((el) => el.done).length;
+    const todo = this.state.todoData.length - done;
+
     return (
-      <>
-      <div className="App">
-      <AppHeader />
-      <SearchBlock />
-      <ToDoList todoItem ={this.state.todoData} onDelete={this.deleteItem} />
-    </div>
-    </>
+        <div className="App">
+          <AppHeader todo={todo} done={done} />
+          <SearchBlock />
+          <ToDoList 
+            todoItem ={detectedItems} 
+            onDelete={this.deleteItem}
+            toggleDone={this.toggleDone}
+            toggleImportant={this.toggleImportant} 
+          />
+          <ItemAddBtn clickToAdd={ this.addItem }/>
+      </div>
     )
   }
 }

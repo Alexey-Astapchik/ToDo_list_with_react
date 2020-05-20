@@ -1,0 +1,14 @@
+.ItemBtn{
+    margin-top: 20px;
+    display: flex;
+    /* flex-direction: column; */
+    justify-content: center;
+    padding-right: 30px;
+}
+.newDeal {
+    width: 80%;
+    outline: none;
+}
+input{
+    outline: none;
+}

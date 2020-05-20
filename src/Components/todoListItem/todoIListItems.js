@@ -5,56 +5,30 @@ import './todoListItem.css';
 
 class TodoListItem extends React.Component{
 
-    // состояние state - это объект, кот. содержит данные.
-
-    state = {
-        done: false,
-        important: false
-    }
-    
-
-    clickOnLabel = () => {
-        this.setState( (state) => {
-            return {
-                done: !state.done 
-            }
-        })
-    };
-
-    makeImportant = () => {
-        this.setState((state) => {
-            return{
-                important: !state.important
-            }
-        })
-    } 
-
     render () {
-        const { label, onDeleteItem } = this.props;
-        const { done, important } = this.state;
+        const { label, onDeleteItem, toggleImportant, toggleDone, done, important } = this.props;
         
-
         let classNames = "todo-list-item";
-
+      
         if(done) {
-            classNames += ' done';
+          classNames += ' done';
         }
-
         if(important) {
-            classNames += ' important';
+          classNames += ' important';
         }
     
         return (
             <div className={classNames}>
                 <span 
                     className='todo-list-label' 
-                    onClick= {this.clickOnLabel}
+                    onClick= {toggleDone}
+
                 >
                     { label }
                 </span>
                 <button 
                     className="btn btn-outline-success btn-high"
-                    onClick={this.makeImportant}
+                    onClick={toggleImportant}
                 >
                     <i className="fa fa-bolt" aria-hidden="true"></i>
                 </button>
