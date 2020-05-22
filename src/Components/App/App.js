@@ -7,6 +7,7 @@ import ToDoList from '../toDoList/toDoList';
 
 import '../App/App.css'
 import ItemAddBtn from '../ItemAddBtn/ItemAddBtn';
+import StatusFilter from '../StatusFilter/StatusFilter';
 
 class App extends React.Component {
 
@@ -18,6 +19,7 @@ class App extends React.Component {
       {label: 'Python', important:false, done:false, id:4}
     ],
     detectedText: '',
+    filter: 'all',
   };
 
   deleteItem = (id) => {
@@ -80,25 +82,54 @@ class App extends React.Component {
     })
   }
 
+  onSearchItem = (detectedText) => {
+    this.setState({detectedText})
+  }
+
+
   searchInTodoList = (arr, detectedText) => {
     if(detectedText.length === 0){
       return arr;
     }
     return arr.filter((e) => {
-      return  e.label.indexOf(detectedText) > 1;
+      return  e.label.toUpperCase().indexOf(detectedText.toUpperCase()) > -1;
     })
   } 
 
+  itemsFilter = (arr, filter) => {
+    switch(filter) {
+      case 'all':
+        return arr;
+      case 'active':
+        return arr.filter((el) => !el.done);
+      case 'done':
+        return arr.filter((el) => el.done);
+      default: 
+        return arr;
+    }
+  }
+
+  onItemsFilter = (filter) => {
+    this.setState({filter})
+  }
+
   render() {
-    const { todoData, detectedText } = this.state;
-    const detectedItems = this.searchInTodoList(todoData, detectedText)
+    const { todoData, detectedText, filter } = this.state;
+    const detectedItems = this.itemsFilter(
+      this.searchInTodoList(todoData, detectedText), filter);
     const done = todoData.filter((el) => el.done).length;
     const todo = this.state.todoData.length - done;
 
     return (
         <div className="App">
           <AppHeader todo={todo} done={done} />
-          <SearchBlock />
+          <SearchBlock 
+            onSearchItem={this.onSearchItem}
+          />
+          <StatusFilter
+            onItemsFilter={ this.onItemsFilter }
+            filter= {filter}
+          />
           <ToDoList 
             todoItem ={detectedItems} 
             onDelete={this.deleteItem}
